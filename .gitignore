@@ -1,0 +1,53 @@
+# Android
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build/
+/captures
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Kotlin
+*.class
+*.jar
+*.war
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Docker
+docker-compose.override.yml
+
+# Node (caso frontend web)
+node_modules/
+
+# Python (caso backend)
+__pycache__/
+*.pyc
+.venv/
+
+# Monitoring
+prometheus_data/
+grafana_data/
+
+# Misc
+*.log
+*.tmp
+celerybeat-schedule*
