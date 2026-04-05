@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <variable name="LOG_FORMAT" value="${LOG_FORMAT:-json}" />
+
+    <!-- Console appender pra dev (legivel) -->
+    <appender name="CONSOLE_DEV" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %mdc%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- JSON appender pra prod -->
+    <appender name="CONSOLE_JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeMdcKeyName>correlationId</includeMdcKeyName>
+            <includeMdcKeyName>service</includeMdcKeyName>
+            <includeMdcKeyName>tenantId</includeMdcKeyName>
+            <includeMdcKeyName>userId</includeMdcKeyName>
+        </encoder>
+    </appender>
+
+    <!-- Seleciona appender baseado em variavel de ambiente -->
+    <if condition='p("LOG_FORMAT").equals("json")'>
+        <then>
+            <root level="INFO">
+                <appender-ref ref="CONSOLE_JSON" />
+            </root>
+        </then>
+        <else>
+            <root level="INFO">
+                <appender-ref ref="CONSOLE_DEV" />
+            </root>
+        </else>
+    </if>
+
+    <!-- Dev: usa console legivel por default -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE_DEV" />
+    </root>
+
+    <logger name="com.rappiclone" level="DEBUG" />
+    <logger name="io.ktor" level="INFO" />
+    <logger name="org.apache.kafka" level="WARN" />
+    <logger name="io.grpc" level="WARN" />
+</configuration>

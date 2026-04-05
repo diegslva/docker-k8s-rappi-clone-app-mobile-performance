@@ -1,0 +1,10 @@
+# Container pra rodar comandos Gradle sem instalar JDK/Gradle no host
+# Uso: docker run --rm -v $(pwd):/project rappiclone-gradle <gradle-command>
+FROM eclipse-temurin:21-jdk
+
+WORKDIR /project
+
+# Cache Gradle
+ENV GRADLE_USER_HOME=/gradle-cache
+
+ENTRYPOINT ["./gradlew", "--no-daemon"]
