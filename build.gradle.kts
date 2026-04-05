@@ -77,6 +77,24 @@ subprojects {
         useJUnitPlatform()
     }
 
+    // Task separada pra testes unitarios (sem Docker/Testcontainers)
+    tasks.register<Test>("unitTest") {
+        useJUnitPlatform {
+            excludeTags("integration")
+        }
+        description = "Roda apenas testes unitarios (sem Testcontainers)"
+        group = "verification"
+    }
+
+    // Task separada pra testes de integracao (precisa de Docker)
+    tasks.register<Test>("integrationTest") {
+        useJUnitPlatform {
+            includeTags("integration")
+        }
+        description = "Roda testes de integracao com Testcontainers (precisa de Docker)"
+        group = "verification"
+    }
+
     dependencies {
         val implementation by configurations
         val testImplementation by configurations
