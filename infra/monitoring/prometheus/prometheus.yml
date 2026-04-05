@@ -1,0 +1,117 @@
+global:
+  scrape_interval: 10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Backend services (rodam no host Windows, acessiveis via host.docker.internal)
+  - job_name: rappiclone-services
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["host.docker.internal:8001"]
+        labels:
+          service: tenant-service
+          environment: dev
+      - targets: ["host.docker.internal:8002"]
+        labels:
+          service: identity-service
+          environment: dev
+      - targets: ["host.docker.internal:8003"]
+        labels:
+          service: user-profile-service
+          environment: dev
+      - targets: ["host.docker.internal:8004"]
+        labels:
+          service: catalog-service
+          environment: dev
+      - targets: ["host.docker.internal:8005"]
+        labels:
+          service: search-service
+          environment: dev
+      - targets: ["host.docker.internal:8006"]
+        labels:
+          service: cart-service
+          environment: dev
+      - targets: ["host.docker.internal:8007"]
+        labels:
+          service: order-service
+          environment: dev
+      - targets: ["host.docker.internal:8008"]
+        labels:
+          service: payment-service
+          environment: dev
+      - targets: ["host.docker.internal:8009"]
+        labels:
+          service: courier-service
+          environment: dev
+      - targets: ["host.docker.internal:8010"]
+        labels:
+          service: tracking-service
+          environment: dev
+      - targets: ["host.docker.internal:8011"]
+        labels:
+          service: notification-service
+          environment: dev
+      - targets: ["host.docker.internal:8012"]
+        labels:
+          service: rating-service
+          environment: dev
+      - targets: ["host.docker.internal:8013"]
+        labels:
+          service: promotion-service
+          environment: dev
+      - targets: ["host.docker.internal:8014"]
+        labels:
+          service: pricing-service
+          environment: dev
+      - targets: ["host.docker.internal:8015"]
+        labels:
+          service: geolocation-service
+          environment: dev
+      - targets: ["host.docker.internal:8016"]
+        labels:
+          service: media-service
+          environment: dev
+      - targets: ["host.docker.internal:8017"]
+        labels:
+          service: analytics-service
+          environment: dev
+      - targets: ["host.docker.internal:8018"]
+        labels:
+          service: chat-service
+          environment: dev
+      - targets: ["host.docker.internal:8019"]
+        labels:
+          service: support-service
+          environment: dev
+      - targets: ["host.docker.internal:8020"]
+        labels:
+          service: onboarding-service
+          environment: dev
+      - targets: ["host.docker.internal:8021"]
+        labels:
+          service: fiscal-service
+          environment: dev
+      - targets: ["host.docker.internal:8022"]
+        labels:
+          service: settlement-service
+          environment: dev
+      - targets: ["host.docker.internal:8023"]
+        labels:
+          service: recommendation-service
+          environment: dev
+      - targets: ["host.docker.internal:8080"]
+        labels:
+          service: api-gateway
+          environment: dev
+
+  - job_name: emqx
+    metrics_path: /api/v5/prometheus/stats
+    static_configs:
+      - targets: ["emqx:18083"]
+        labels:
+          service: emqx
+          environment: dev

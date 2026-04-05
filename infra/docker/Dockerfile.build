@@ -1,0 +1,45 @@
+FROM eclipse-temurin:21-jdk AS builder
+
+WORKDIR /project
+
+# Cache Gradle wrapper
+COPY gradle/ gradle/
+COPY gradlew gradlew.bat ./
+RUN chmod +x gradlew && ./gradlew --version
+
+# Cache dependencies
+COPY build.gradle.kts settings.gradle.kts ./
+COPY shared/shared-domain/build.gradle.kts shared/shared-domain/
+COPY shared/shared-infra/build.gradle.kts shared/shared-infra/
+COPY shared/shared-test/build.gradle.kts shared/shared-test/
+
+# Copy all service build files
+COPY services/ services/
+
+# Download dependencies (cached layer)
+RUN ./gradlew dependencies --no-daemon || true
+
+# Copy source code
+COPY shared/ shared/
+COPY proto/ proto/
+
+# Build shared modules
+RUN ./gradlew :shared:shared-domain:build :shared:shared-infra:build --no-daemon
+
+# --- Service-specific build stage ---
+# Uso: docker build --build-arg SERVICE=tenant-service -f Dockerfile.build .
+ARG SERVICE
+COPY services/${SERVICE}/ services/${SERVICE}/
+RUN ./gradlew :services:${SERVICE}:build --no-daemon
+
+# --- Runtime stage ---
+FROM eclipse-temurin:21-jre-alpine
+
+ARG SERVICE
+WORKDIR /app
+
+COPY --from=builder /project/services/${SERVICE}/build/libs/*-all.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
