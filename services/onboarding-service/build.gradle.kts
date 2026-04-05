@@ -4,6 +4,10 @@ plugins {
     application
 }
 
+application {
+    mainClass.set("com.rappiclone.onboarding.ApplicationKt")
+}
+
 dependencies {
     implementation(project(":shared:shared-infra"))
 
