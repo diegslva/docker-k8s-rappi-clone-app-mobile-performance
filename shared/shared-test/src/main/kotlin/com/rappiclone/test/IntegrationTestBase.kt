@@ -16,7 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
  * Cada teste roda em transacao que faz rollback (isolamento).
  */
 object TestPostgres {
-    val container: PostgreSQLContainer<*> = PostgreSQLContainer("postgis/postgis:17-3.5-alpine")
+    val container: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:17-alpine")
         .withDatabaseName("rappiclone_test")
         .withUsername("test")
         .withPassword("test")
