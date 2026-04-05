@@ -2,17 +2,16 @@ package com.rappiclone.infra.tenant
 
 import com.rappiclone.domain.errors.ApiError
 import com.rappiclone.domain.tenant.TenantContext
-import com.rappiclone.domain.tenant.TenantContextElement
+import com.rappiclone.domain.tenant.TenantHolder
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
-import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("com.rappiclone.infra.tenant.TenantPlugin")
 
 /**
- * Plugin Ktor que extrai X-Tenant-ID do header e injeta no coroutine context.
+ * Plugin Ktor que extrai X-Tenant-ID do header e injeta no TenantHolder (ThreadLocal).
  * Todo request (exceto health/metrics) DEVE ter tenant.
  */
 val TenantPlugin = createApplicationPlugin(name = "TenantPlugin") {
@@ -41,8 +40,7 @@ val TenantPlugin = createApplicationPlugin(name = "TenantPlugin") {
             microRegionId = microRegionId
         )
 
-        // Injeta no coroutine context pra estar disponivel em todo o pipeline
-        val element = TenantContextElement(tenantContext)
+        TenantHolder.set(tenantContext)
         call.attributes.put(TenantAttributeKey, tenantContext)
     }
 }

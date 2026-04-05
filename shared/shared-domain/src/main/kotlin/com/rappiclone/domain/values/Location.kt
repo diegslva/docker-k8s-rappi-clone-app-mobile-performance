@@ -30,9 +30,10 @@ data class Location(
     /**
      * Distancia em km, arredondada pra 2 casas.
      */
-    fun distanceKmTo(other: Location): Double =
-        (distanceTo(other) / 1000.0 * 100).roundToInt() / 100.0
+    fun distanceKmTo(other: Location): Double {
+        val meters = distanceTo(other)
+        return (meters / 1000.0 * 100).roundToLong() / 100.0
+    }
 
-    private fun Double.roundToInt(): Int = kotlin.math.roundToInt(this)
-    private fun roundToInt(value: Double): Int = value.toInt()
+    private fun Double.roundToLong(): Long = kotlin.math.round(this).toLong()
 }

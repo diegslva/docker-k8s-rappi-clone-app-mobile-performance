@@ -18,7 +18,7 @@ val hikariVersion = "6.2.1"
 val exposedVersion = "0.58.0"
 val postgresDriverVersion = "42.7.5"
 val flywayVersion = "11.3.1"
-val redisVersion = "5.2.0"
+val redisVersion = "6.5.2.RELEASE"
 val kafkaVersion = "3.9.0"
 val micrometerVersion = "1.14.4"
 val opentelemetryVersion = "1.47.0"
@@ -85,7 +85,11 @@ subprojects {
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
         implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinxDatetimeVersion")
 
-        testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+        val testRuntimeOnly by configurations
+
+        testImplementation(platform("org.junit:junit-bom:$junitVersion"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
         testImplementation("io.mockk:mockk:$mockkVersion")
         testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion")
     }
