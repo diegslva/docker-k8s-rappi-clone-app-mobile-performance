@@ -25,7 +25,7 @@ val opentelemetryVersion = "1.47.0"
 val resilience4jVersion = "2.3.0"
 val hivemqMqttVersion = "1.3.5"
 val junitVersion = "5.11.4"
-val testcontainersVersion = "1.20.5"
+val testcontainersVersion = "2.0.4"
 val mockkVersion = "1.13.14"
 
 allprojects {
@@ -93,6 +93,14 @@ subprojects {
         }
         description = "Roda testes de integracao com Testcontainers (precisa de Docker)"
         group = "verification"
+
+        // Propaga config Docker pro JVM forked dos testes
+        val dockerHost = System.getenv("DOCKER_HOST") ?: "tcp://localhost:2375"
+        environment("DOCKER_HOST", dockerHost)
+        environment("TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE", "/var/run/docker.sock")
+        systemProperty("docker.host", dockerHost)
+        // Forca API version compativel com docker-java
+        environment("DOCKER_API_VERSION", "1.44")
     }
 
     dependencies {
