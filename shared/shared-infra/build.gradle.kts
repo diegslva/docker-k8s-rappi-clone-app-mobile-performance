@@ -61,6 +61,7 @@ dependencies {
 
     // Metrics and tracing
     api("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
+    api("io.micrometer:micrometer-registry-prometheus-simpleclient:$micrometerVersion")
     api("io.opentelemetry:opentelemetry-api:$opentelemetryVersion")
     api("io.opentelemetry:opentelemetry-sdk:$opentelemetryVersion")
     api("io.opentelemetry:opentelemetry-exporter-otlp:$opentelemetryVersion")
